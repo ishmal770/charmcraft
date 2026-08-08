@@ -357,9 +357,212 @@
         height: 24rem;
       }
     }
+
+    /* Site nav */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 251, 240, 0.9);
+      backdrop-filter: blur(6px);
+      border-bottom: 4px solid var(--ink);
+    }
+
+    .site-nav-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 80px;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .site-nav-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .site-nav-links {
+      display: none;
+      align-items: center;
+      gap: 1.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .site-nav-link {
+      color: var(--ink);
+      text-decoration: none;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .site-nav-link.active {
+      color: var(--pink);
+      border-bottom-color: var(--pink);
+    }
+
+    .site-nav-cta {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--ink);
+    }
+
+    .site-nav-cta img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    @media (min-width: 900px) {
+      .site-nav-links {
+        display: flex;
+      }
+    }
+
+    /* About / What is Hack Club section */
+    .about-section {
+      background: #ffffff;
+      border-bottom: 4px solid var(--ink);
+      padding: 4rem 1.5rem;
+    }
+
+    .about-inner {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-logo {
+      height: 32px;
+      width: auto;
+      margin: 0 auto 1.25rem;
+      display: block;
+    }
+
+    .about-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .about-card {
+      position: relative;
+      z-index: 2;
+      margin-top: 2.5rem;
+      background: var(--cream);
+      border: 4px solid var(--ink);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 2.5rem 1.75rem;
+    }
+
+    .about-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .about-copy .accent {
+      color: var(--pink);
+      font-weight: 700;
+    }
+
+    .about-copy .brand {
+      color: #e6483f;
+      font-weight: 700;
+    }
+
+    .about-cta {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 1.75rem;
+      background: #fff;
+      border: 2px solid var(--ink);
+      border-radius: 9999px;
+      padding: 0.5rem 1.25rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .about-cta:hover {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    .about-decor {
+      display: none;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .about-decor img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .about-decor-sparkle {
+      width: 4.5rem;
+      height: 4.5rem;
+      left: -1rem;
+      top: -0.5rem;
+    }
+
+    .about-decor-circle {
+      width: 8rem;
+      height: 8rem;
+      right: -2rem;
+      bottom: -2rem;
+    }
+
+    @media (min-width: 768px) {
+      .about-title {
+        font-size: 3rem;
+      }
+
+      .about-copy {
+        text-align: center;
+      }
+
+      .about-decor {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
+  <header class="site-nav">
+    <div class="site-nav-inner">
+      <img class="site-nav-logo" src="https://placehold.co/249x140" alt="CharmCraft logo" />
+      <nav class="site-nav-links">
+        <a href="#welcome" class="site-nav-link active">Home</a>
+        <a href="#team" class="site-nav-link">Team</a>
+        <a href="#workshops" class="site-nav-link">Workshops</a>
+        <a href="#form" class="site-nav-link">Form</a>
+      </nav>
+      <a href="#form" class="site-nav-cta">
+        <img src="https://placehold.co/91x32" alt="Submit your design" />
+      </a>
+    </div>
+  </header>
+
   <div class="hero">
     <!-- Slide 1: Logo -->
     <section class="slide slide-tone-welcome" id="welcome">
@@ -471,6 +674,25 @@
       </div>
     </section>
   </div>
+
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-decor about-decor-sparkle"><img src="https://placehold.co/80x80" alt="" /></div>
+      <img class="about-logo" src="flag-standalone.png" alt="Hack Club logo" />
+      <h2 class="about-title">What is HACK CLUB?</h2>
+      <div class="about-card">
+        <p class="about-copy">
+          <span class="accent">CharmCraft</span> is a <span class="accent">You Ship, We Ship</span> program by <span class="brand">Hack Club</span>, a nonprofit network inspiring young people to code.
+          <br /><br />
+          Design your own custom charm using 3D CAD, submit your project, and we'll manufacture and ship it right to your door, completely free.
+          <br /><br />
+          Whether you're new to CAD or someone with experience, this program gives you the tools, tutorials, and community to create something real. No experience required. Just curiosity.
+        </p>
+        <a href="https://hackclub.com" class="about-cta" target="_blank" rel="noopener">Visit hackclub.com</a>
+      </div>
+      <div class="about-decor about-decor-circle"><img src="https://placehold.co/173x173" alt="" /></div>
+    </div>
+  </section>
 
   <footer class="hero-footer">
     <p class="hero-tagline">We ship it, <span class="tag-accent">you design</span></p>
