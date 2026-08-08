@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CharmCraft — Hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --cream: #fffbf0;
+      --ink: #333333;
+      --ink-soft: rgba(51, 51, 51, 0.6);
+      --ink-faint: rgba(51, 51, 51, 0.4);
+      --pink: #f48fb1;
+      --shadow-sm: 2px 2px 0 #333333;
+      --shadow: 4px 4px 0 #333333;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      scroll-snap-type: y proximity;
+    }
+
+    .slide {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: 4px solid var(--ink);
+      scroll-snap-align: start;
+    }
+
+    .slide-tone-welcome { background: #fff6d8; }
+    .slide-tone-design  { background: #f8dce9; }
+    .slide-tone-ship    { background: #dff2f2; }
+    .slide-tone-wear    { background: #e9e2f6; }
+
+    .slide-dots {
+      position: absolute;
+      inset: 0;
+      opacity: 0.3;
+      background-image: radial-gradient(#333 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    .slide-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1440px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 7rem 1.5rem 3rem;
+    }
+
+    .slide-text {
+      z-index: 10;
+      max-width: 36rem;
+      text-align: center;
+    }
+
+    .slide:first-child .slide-text {
+      order: 2;
+    }
+
+    .slide-image-wrap {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide:first-child .slide-image-wrap {
+      order: 1;
+    }
+
+    .slide-glow {
+      position: absolute;
+      width: 14rem;
+      height: 14rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      filter: blur(48px);
+    }
+
+    .slide-image {
+      position: relative;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(10px 12px 0 rgba(51, 51, 51, 0.16));
+    }
+
+    .img-welcome { max-height: 58vh; max-width: 88vw; }
+    .img-design  { max-height: 43vh; max-width: 94vw; }
+    .img-ship    { max-height: 39vh; max-width: 94vw; }
+    .img-wear    { max-height: 43vh; max-width: 94vw; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      border: 2px solid var(--ink);
+      border-radius: 9999px;
+      background: #fff;
+      padding: 0.375rem 1rem;
+      box-shadow: var(--shadow-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .badge-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--pink);
+    }
+
+    .badge-sparkle {
+      width: 0.875rem;
+      height: 0.875rem;
+      fill: var(--pink);
+    }
+
+    .slide-title {
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .slide-title-xl {
+      font-size: 3.75rem;
+    }
+
+    .slide-title-lg {
+      font-size: 3rem;
+    }
+
+    .slide-title .accent {
+      color: var(--pink);
+    }
+
+    .slide-desc {
+      margin: 1.5rem auto 0;
+      max-width: 28rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      text-wrap: pretty;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      border: 2px solid var(--ink);
+      border-radius: 0.75rem;
+      background: var(--pink);
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    .cta-arrow {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: transform 0.2s;
+    }
+
+    .cta-btn:hover .cta-arrow {
+      transform: translateX(4px);
+    }
+
+    .step-tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .step-check {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--pink);
+      stroke-width: 3;
+      fill: none;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ink);
+    }
+
+    .scroll-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+    }
+
+    .scroll-arrow {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--ink);
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .scroll-box {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--pink);
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .bounce {
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    .hero-footer {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .hero-tagline {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .hero-tagline .tag-accent {
+      color: var(--pink);
+    }
+
+    .hero-sponsored {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(255, 251, 240, 0.6);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 768px) {
+      .hero-tagline {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Tablet & up */
+    @media (min-width: 768px) {
+      .slide-inner {
+        flex-direction: row;
+        gap: 3rem;
+        padding: 6rem 4rem 3rem;
+      }
+
+      .slide-text {
+        text-align: left;
+      }
+
+      .slide-desc {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .step-tag {
+        justify-content: flex-start;
+      }
+
+      .slide-title-xl { font-size: 6rem; }
+      .slide-title-lg { font-size: 4.5rem; }
+
+      .img-welcome { max-height: 66vh; max-width: 58vw; }
+      .img-design  { max-height: 59vh; max-width: 64vw; }
+      .img-ship    { max-height: 56vh; max-width: 66vw; }
+      .img-wear    { max-height: 59vh; max-width: 64vw; }
+
+      .slide-glow {
+        width: 24rem;
+        height: 24rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <!-- Slide 1: Logo -->
+    <section class="slide slide-tone-welcome" id="welcome">
+      <div class="slide-dots"></div>
+      <div class="slide-inner">
+        <div class="slide-text">
+          <div class="badge">
+            <svg class="badge-sparkle" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+            A HACK CLUB YSWS
+          </div>
+          <h1 class="slide-title slide-title-xl">
+            <span class="accent">Charm</span><br />Craft
+          </h1>
+          <p class="slide-desc">Turn your ideas into something you can actually wear.</p>
+          <a href="#design" class="cta-btn">
+            See how it works
+            <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="slide-image-wrap">
+          <div class="slide-glow"></div>
+          <img class="slide-image img-welcome" src="/images/Sticker_(2).png" alt="CharmCraft logo artwork" />
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-label">Scroll to explore</span>
+        <svg class="scroll-arrow bounce" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </section>
+
+    <!-- Slide 2: Design -->
+    <section class="slide slide-tone-design" id="design">
+      <div class="slide-dots"></div>
+      <div class="slide-inner">
+        <div class="slide-text">
+          <div class="badge">
+            <span class="badge-num">01</span>
+            STEP ONE
+          </div>
+          <h1 class="slide-title slide-title-lg">Design it.</h1>
+          <p class="slide-desc">Create a charm that feels like you. Start from an idea, sketch it in CAD, and make it yours.</p>
+          <div class="step-tag">
+            <svg class="step-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            <span>No experience needed</span>
+          </div>
+        </div>
+        <div class="slide-image-wrap">
+          <div class="slide-glow"></div>
+          <img class="slide-image img-design" src="/images/Sticker_(4).png" alt="Design it — CharmCraft process illustration" />
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-label">01 / 03</span>
+        <svg class="scroll-arrow bounce" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </section>
+
+    <!-- Slide 3: Ship -->
+    <section class="slide slide-tone-ship" id="ship">
+      <div class="slide-dots"></div>
+      <div class="slide-inner">
+        <div class="slide-text">
+          <div class="badge">
+            <span class="badge-num">02</span>
+            STEP TWO
+          </div>
+          <h1 class="slide-title slide-title-lg">Ship it.</h1>
+          <p class="slide-desc">Submit your finished design. We will review it, print it, and send your charm your way.</p>
+          <div class="step-tag">
+            <svg class="step-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            <span>We ship worldwide</span>
+          </div>
+        </div>
+        <div class="slide-image-wrap">
+          <div class="slide-glow"></div>
+          <img class="slide-image img-ship" src="/images/Sticker_(3).png" alt="Ship it — CharmCraft process illustration" />
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-label">02 / 03</span>
+        <svg class="scroll-arrow bounce" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </section>
+
+    <!-- Slide 4: Wear -->
+    <section class="slide slide-tone-wear" id="wear">
+      <div class="slide-dots"></div>
+      <div class="slide-inner">
+        <div class="slide-text">
+          <div class="badge">
+            <span class="badge-num">03</span>
+            STEP THREE
+          </div>
+          <h1 class="slide-title slide-title-lg">Wear it.</h1>
+          <p class="slide-desc">Open the box, finish your earrings, and show off something you made from scratch.</p>
+          <div class="step-tag">
+            <svg class="step-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            <span>Made by you</span>
+          </div>
+        </div>
+        <div class="slide-image-wrap">
+          <div class="slide-glow"></div>
+          <img class="slide-image img-wear" src="/images/Sticker_(1).png" alt="Wear it — CharmCraft process illustration" />
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-label">03 / 03</span>
+        <svg class="scroll-box" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
+      </div>
+    </section>
+  </div>
+
+  <footer class="hero-footer">
+    <p class="hero-tagline">We ship it, <span class="tag-accent">you design</span></p>
+    <p class="hero-sponsored">Sponsored by Jared</p>
+  </footer>
+</body>
+</html>
