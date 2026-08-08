@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CharmCraft — Workshops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root { --cream: #fffbf0; --ink: #333333; --ink-soft: rgba(51,51,51,.6); --pink: #f48fb1; --shadow: 8px 8px 0 #333333; --header-h: 84px; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+    /* Header */
+    .site-nav { position: sticky; top: 0; left: 0; width: 100%; background: rgba(255,251,240,.9); backdrop-filter: blur(6px); border-bottom: 4px solid var(--ink); z-index: 999; }
+    .site-nav-inner { max-width: 1440px; margin: 0 auto; height: 80px; padding: 0 1.5rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; }
+    .site-nav-logo { height: 40px; width: auto; display: block; }
+    .site-nav-links { display: none; align-items: center; justify-content: center; gap: 1.75rem; font-family: 'JetBrains Mono', monospace; font-size: .875rem; font-weight: 700; }
+    .site-nav-link { color: var(--ink); text-decoration: none; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+    .site-nav-link.active { color: var(--pink); border-bottom-color: var(--pink); }
+    .site-nav-cta { display: flex; align-items: center; height: 44px; padding-left: 1.5rem; border-left: 2px solid var(--ink); justify-self: end; }
+    .site-nav-cta img { height: 32px; width: auto; display: block; }
+    @media (min-width: 900px) { .site-nav-links { display: flex; } }
+
+    /* Workshop section */
+    .ws-section, .ws-gallery { padding: 4rem 1.5rem; }
+    .ws-inner, .ws-gallery-inner { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .ws-title, .ws-gallery-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--ink); text-wrap: balance; }
+    .ws-title-accent, .ws-gallery-title-accent { color: var(--pink); }
+    .ws-stats { display: flex; flex-direction: column; gap: 1.25rem; flex-shrink: 0; }
+    .ws-stat-card { min-width: 200px; background: #fff; border: 4px solid var(--ink); border-radius: 16px; box-shadow: 6px 6px 0 var(--ink); padding: 1.25rem 1.5rem; }
+    .ws-stat-value { font-size: 1.875rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+    .ws-stat-label { margin-top: .5rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--ink-soft); }
+    .ws-desc-row { margin-top: 2rem; display: flex; gap: 2.5rem; align-items: flex-start; }
+    .ws-desc { flex: 1; min-width: 0; color: rgba(51,51,51,.8); font-family: 'JetBrains Mono', monospace; font-size: .9375rem; line-height: 1.7; }
+    .ws-desc p + p { margin-top: 1rem; }
+
+    /* Cards + map */
+    .ws-layout { margin-top: 3rem; display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem; align-items: start; }
+    .ws-side { display: flex; flex-direction: column; gap: 1.5rem; }
+    .ws-card { background: #fff; border: 4px solid var(--ink); border-radius: 16px; box-shadow: 6px 6px 0 var(--ink); padding: 1.5rem; }
+    .ws-card-title { font-size: 1.125rem; font-weight: 700; color: var(--ink); }
+    .ws-card-banner { margin-top: 1rem; background: var(--pink); color: #fff; border: 2px solid var(--ink); border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); padding: .875rem 1rem; font-size: .875rem; font-weight: 700; text-align: center; line-height: 1.4; }
+    .ws-card-pins { background: #fff59d; }
+    .ws-pin-list { margin-top: 1rem; display: flex; flex-direction: column; }
+    .ws-pin { padding: .625rem 0 .625rem .875rem; border-left: 2px solid var(--ink); }
+    .ws-pin + .ws-pin { margin-top: .75rem; }
+    .ws-pin-city { font-size: .875rem; font-weight: 700; color: var(--ink); }
+    .ws-pin-meta { margin-top: .125rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--ink-soft); }
+    .ws-map { height: 520px; border: 4px solid var(--ink); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; background: var(--cream); z-index: 1; }
+    .ws-map-note { margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--ink-soft); }
+
+    /* Gallery */
+    .ws-gallery { background: #fff; border-top: 6px solid var(--ink); }
+    .ws-gallery-grid { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .ws-gallery-box, .ws-gallery-add { aspect-ratio: 5 / 4; background: var(--cream); border: 4px solid var(--ink); border-radius: 24px; box-shadow: var(--shadow); }
+    .ws-gallery-add { background: var(--pink); color: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 1.125rem; font-weight: 700; text-decoration: none; padding: 1rem; border: 4px solid var(--ink); font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
+    @media (max-width: 900px) { .ws-desc-row { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav-inner">
+      <img class="site-nav-logo" src="flag-orpheus-top.png" alt="CharmCraft logo" />
+      <nav class="site-nav-links">
+        <a href="hero.html" class="site-nav-link">Home</a>
+        <a href="team.html" class="site-nav-link">Team</a>
+        <a href="workshop.html" class="site-nav-link active">Workshops</a>
+        <a href="form.html" class="site-nav-link">Form</a>
+      </nav>
+      <a href="form.html" class="site-nav-cta">
+        <img src="flag-standalone.png" alt="Submit your design" />
+      </a>
+    </div>
+  </header>
+
+  <main class="ws-section">
+    <div class="ws-inner">
+      <h1 class="ws-title">Hosting <span class="ws-title-accent">workshops</span></h1>
+
+      <div class="ws-desc-row">
+        <div class="ws-desc">
+          <p>CharmCraft is a Hack Club YSWS where you design a charm and get an earring kit so you can turn their creations into wearable jewelry. No prior design experience is needed — it works for complete beginners, and girls from anywhere in the world are welcome!</p>
+          <p>Host a CharmCraft workshop at your club meeting. Members will design their own charm using beginner-friendly design software (following our workshop guide), submit their design, and have it reviewed. Each approved submission earns them a free 3D-printed charm, shipped alongside an earring kit so they can assemble their own personalized earrings at home.</p>
+          <p>Our workshop guide walks you through the entire process, making it easy to run — even if no one has experience with 3D design.</p>
+          <p>This workshop is designed to introduce girls to 3D design, creativity, and digital fabrication in a fun, hands-on way while giving them something they can actually wear and keep.</p>
+        </div>
+
+        <div class="ws-stats">
+          <div class="ws-stat-card">
+            <div class="ws-stat-value">4</div>
+            <div class="ws-stat-label">Workshops Hosted</div>
+          </div>
+          <div class="ws-stat-card">
+            <div class="ws-stat-value">110</div>
+            <div class="ws-stat-label">Girls Reached</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ws-layout">
+        <div class="ws-side">
+          <div class="ws-card">
+            <div class="ws-card-title">Host a Workshop</div>
+            <div class="ws-card-banner">Start a Hack Club sponsored club at your school</div>
+          </div>
+
+          <div class="ws-card ws-card-pins">
+            <div class="ws-card-title">Recent Pins</div>
+            <div class="ws-pin-list">
+              <div class="ws-pin">
+                <div class="ws-pin-city">Toronto, ON</div>
+                <div class="ws-pin-meta">by Alex R. • 30 girls</div>
+              </div>
+              <div class="ws-pin">
+                <div class="ws-pin-city">London, UK</div>
+                <div class="ws-pin-meta">by Emma W. • 15 girls</div>
+              </div>
+              <div class="ws-pin">
+                <div class="ws-pin-city">Los Angeles, CA</div>
+                <div class="ws-pin-meta">by Maya P. • 40 girls</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="workshop-map" class="ws-map"></div>
+          <div class="ws-map-note">Click anywhere on the map to drop a new pin.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="ws-gallery">
+    <div class="ws-gallery-inner">
+      <h2 class="ws-gallery-title">Workshop <span class="ws-gallery-title-accent">Photo Gallery</span></h2>
+      <div class="ws-gallery-grid">
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <div class="ws-gallery-box"></div>
+        <button type="button" class="ws-gallery-add">Add your own photos</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    var map = L.map('workshop-map', {
+      scrollWheelZoom: false,
+      center: [40, -40],
+      zoom: 3
+    });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var existingPins = [
+      { label: 'Toronto, ON', lat: 43.6532, lng: -79.3832 },
+      { label: 'London, UK', lat: 51.5074, lng: -0.1278 },
+      { label: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437 }
+    ];
+
+    existingPins.forEach(function (pin) {
+      L.marker([pin.lat, pin.lng])
+        .addTo(map)
+        .bindPopup('<b>' + pin.label + '</b>')
+        .openPopup();
+    });
+
+    map.on('click', function (e) {
+      L.marker(e.latlng)
+        .addTo(map)
+        .bindPopup(
+          '<b>New pin</b><br>Lat: ' +
+            e.latlng.lat.toFixed(4) +
+            '<br>Lng: ' +
+            e.latlng.lng.toFixed(4)
+        )
+        .openPopup();
+    });
+  </script>
+</body>
+</html>

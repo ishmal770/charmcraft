@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CharmCraft — Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root { --cream: #fffbf0; --ink: #333333; --ink-soft: rgba(51,51,51,.6); --pink: #f48fb1; --yellow: #fff59d; --shadow: 8px 8px 0 #333333; --header-h: 84px; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+    /* Header */
+    .site-nav { position: sticky; top: 0; left: 0; width: 100%; background: rgba(255,251,240,.9); backdrop-filter: blur(6px); border-bottom: 4px solid var(--ink); z-index: 999; }
+    .site-nav-inner { max-width: 1440px; margin: 0 auto; height: 80px; padding: 0 1.5rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; }
+    .site-nav-logo { height: 40px; width: auto; display: block; }
+    .site-nav-links { display: none; align-items: center; justify-content: center; gap: 1.75rem; font-family: 'JetBrains Mono', monospace; font-size: .875rem; font-weight: 700; }
+    .site-nav-link { color: var(--ink); text-decoration: none; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+    .site-nav-link.active { color: var(--pink); border-bottom-color: var(--pink); }
+    .site-nav-cta { display: flex; align-items: center; height: 44px; padding-left: 1.5rem; border-left: 2px solid var(--ink); justify-self: end; }
+    .site-nav-cta img { height: 32px; width: auto; display: block; }
+    @media (min-width: 900px) { .site-nav-links { display: flex; } }
+
+    /* Sections */
+    .section, .gallery { padding: 4rem 1.5rem; }
+    .inner { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -.02em; color: var(--ink); text-wrap: balance; }
+    .section-title-accent { color: var(--pink); }
+    .section-sub { margin-top: 1.25rem; max-width: 46rem; color: var(--ink-soft); font-family: 'JetBrains Mono', monospace; font-size: .9375rem; line-height: 1.7; }
+
+    /* Hero (Submission Form) */
+    .hero { padding: 4rem 1.5rem 0; }
+    .hero-desc { margin-top: 1.25rem; max-width: 46rem; color: rgba(51,51,51,.8); font-family: 'JetBrains Mono', monospace; font-size: .9375rem; line-height: 1.7; }
+
+    /* Requirements */
+    .req-grid { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .req-card { background: #fff; border: 4px solid var(--ink); border-radius: 24px; box-shadow: var(--shadow); padding: 2rem; display: flex; flex-direction: column; }
+    .req-card.yellow { background: var(--yellow); }
+    .req-card-title { font-size: 1.5rem; font-weight: 800; color: var(--ink); }
+    .req-list { margin-top: 1.5rem; list-style: none; display: flex; flex-direction: column; gap: 1rem; flex: 1; }
+    .req-list li { position: relative; padding-left: 1.75rem; font-family: 'JetBrains Mono', monospace; font-size: .875rem; line-height: 1.6; color: rgba(51,51,51,.85); }
+    .req-list li::before { content: '✦'; position: absolute; left: 0; top: 0; color: var(--pink); }
+    .req-btn { margin-top: 2rem; display: block; background: var(--pink); color: #fff; border: 4px solid var(--ink); border-radius: 16px; box-shadow: 6px 6px 0 var(--ink); padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: .875rem; font-weight: 700; text-align: center; text-decoration: none; }
+    .req-btn.dark { background: var(--ink); }
+    .req-btn:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--ink); }
+    .req-help { margin-top: 2rem; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: .9375rem; color: var(--ink-soft); }
+    .req-help-link { color: var(--pink); font-weight: 700; text-decoration: underline; }
+
+    /* Divider */
+    .divider { margin-top: 2.5rem; margin-left: -1.5rem; margin-right: -1.5rem; border: 0; border-top: 4px solid var(--ink); }
+
+    /* Shop */
+    .shop { background: #fff; border-top: 6px solid var(--ink); border-bottom: 6px solid var(--ink); }
+    .shop-tag { display: inline-block; background: #fff; border: 2px solid var(--ink); border-radius: 9999px; box-shadow: 4px 4px 0 var(--ink); padding: .5rem 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; }
+    .shop-title { font-size: 3rem; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+    .shop-title-accent { color: var(--pink); }
+    .shop-sub { margin-top: 1rem; color: rgba(51,51,51,.8); font-family: 'JetBrains Mono', monospace; font-size: .9375rem; line-height: 1.7; }
+    .shop-grid { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .shop-card { background: #fff; border: 4px solid var(--ink); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+    .shop-card-top { height: 180px; background: rgba(224,224,224,.2); border-bottom: 4px solid var(--ink); position: relative; }
+    .shop-lock { position: absolute; top: 12px; right: 12px; background: var(--ink); color: #fff; border-radius: 8px; padding: .375rem .75rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; font-weight: 700; }
+    .shop-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+    .shop-card-name { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+    .shop-card-desc { margin-top: .5rem; color: rgba(51,51,51,.7); font-family: 'JetBrains Mono', monospace; font-size: .75rem; line-height: 1.6; }
+    .shop-card-meta { margin-top: auto; padding-top: 1.25rem; }
+    .shop-card-cta { background: var(--cream); border: 2px solid var(--ink); border-radius: 12px; padding: .75rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; font-weight: 700; color: var(--ink); text-align: center; }
+    .shop-card-cta.locked { border-color: rgba(51,51,51,.4); color: rgba(51,51,51,.6); }
+    .shop-progress { margin-top: .5rem; height: 6px; background: #e0e0e0; border-radius: 9999px; overflow: hidden; }
+
+    /* FAQ */
+    .faq { display: flex; flex-direction: column; align-items: center; }
+    .faq .inner { text-align: center; }
+    .faq .section-title, .faq .section-sub { text-align: center; }
+    .faq-list { margin: 3rem auto 0; display: flex; flex-direction: column; gap: 1.25rem; width: 100%; max-width: 46rem; }
+    .faq-item { background: #fff; border: 4px solid var(--ink); border-radius: 16px; box-shadow: 6px 6px 0 var(--ink); padding: 1.5rem; text-align: left; }
+    .faq-q { font-size: 1.125rem; font-weight: 700; color: var(--ink); }
+    .faq-a { display: none; margin-top: .75rem; font-family: 'JetBrains Mono', monospace; font-size: .875rem; line-height: 1.7; color: rgba(51,51,51,.8); }
+    .faq-item:hover .faq-a { display: block; }
+    .faq-hint { margin-top: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--ink-soft); }
+
+    /* Canva Guide */
+    .guide { background: var(--yellow); border-top: 6px solid var(--ink); }
+    .guide-link { color: var(--pink); font-weight: 700; text-decoration: underline; }
+    .guide-embed { margin-top: 2.5rem; }
+    .guide-embed iframe { width: 100%; height: 640px; border: 4px solid var(--ink); border-radius: 16px; box-shadow: var(--shadow); background: #fff; }
+
+    @media (max-width: 720px) { .guide-embed iframe { height: 480px; } }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <div class="site-nav-inner">
+      <img class="site-nav-logo" src="flag-orpheus-top.png" alt="CharmCraft logo" />
+      <nav class="site-nav-links">
+        <a href="hero.html" class="site-nav-link">Home</a>
+        <a href="team.html" class="site-nav-link">Team</a>
+        <a href="workshop.html" class="site-nav-link">Workshops</a>
+        <a href="form.html" class="site-nav-link active">Form</a>
+      </nav>
+      <a href="form.html" class="site-nav-cta">
+        <img src="flag-standalone.png" alt="Submit your design" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Submission Form -->
+    <section class="hero">
+      <div class="inner">
+        <h1 class="section-title">Submission <span class="section-title-accent">Form</span></h1>
+        <p class="hero-desc">Submit your charm design and get it shipped to your door for free. Make sure you meet all the requirements below before submitting. Some premium items in the shop are locked until you design more charms.</p>
+      </div>
+      <hr class="divider" />
+    </section>
+
+    <!-- Submission Requirements -->
+    <section class="section">
+      <div class="inner">
+        <span class="shop-tag">// RULES</span>
+        <h2 class="section-title">Submission Requirements</h2>
+        <p class="section-sub">Please review these carefully before submitting your design.</p>
+
+        <div class="req-grid">
+          <div class="req-card">
+            <div class="req-card-title">For Clubs</div>
+            <ul class="req-list">
+              <li>Must work on the project for at least 1 hour</li>
+              <li>No Hackatime recording required</li>
+              <li>Must upload STL file</li>
+              <li>Must be a part of Hack Club Slack and joined the channel #charmcraft-ysws</li>
+            </ul>
+            <a href="https://formspree.io/f/club-form" target="_blank" rel="noopener" class="req-btn">Submit Club Form</a>
+          </div>
+          <div class="req-card yellow">
+            <div class="req-card-title">For Individuals</div>
+            <ul class="req-list">
+              <li>Must work on the project for at least 1 hour</li>
+              <li>No Hackatime recording required</li>
+              <li>Must upload STL file</li>
+              <li>Must be between 13–18 years old (inclusive)</li>
+              <li>Identity must be verified using Hack Club Auth</li>
+              <li>Must be a part of Hack Club Slack and joined the channel #charmcraft-ysws</li>
+            </ul>
+            <a href="https://formspree.io/f/individual-form" target="_blank" rel="noopener" class="req-btn dark">Submit Individual Form</a>
+          </div>
+        </div>
+
+        <p class="req-help">Need help? Reach out to <a href="https://hackclub.slack.com" target="_blank" rel="noopener" class="req-help-link">@IshaMalla</a> in Slack anytime.</p>
+      </div>
+    </section>
+
+    <!-- Shop -->
+    <section class="section shop">
+      <div class="inner">
+        <span class="shop-tag">// Shop</span>
+        <h2 class="shop-title">Shop</h2>
+        <p class="shop-sub">Some premium items are locked until you design more charms.</p>
+
+        <div class="shop-grid">
+          <div class="shop-card">
+            <div class="shop-card-top"></div>
+            <div class="shop-card-body">
+              <div class="shop-card-name">Earring toolkit</div>
+              <div class="shop-card-desc">Essential tools needed to build your earring</div>
+              <div class="shop-card-meta">
+                <div class="shop-card-cta">Add to cart</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop-card">
+            <div class="shop-card-top"><span class="shop-lock">LOCKED</span></div>
+            <div class="shop-card-body">
+              <div class="shop-card-name">Pliers</div>
+              <div class="shop-card-desc">Check the form to see the option to add this</div>
+              <div class="shop-card-meta">
+                <div class="shop-card-cta locked">REQUIRES 3 SHIPS</div>
+                <div class="shop-progress"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop-card">
+            <div class="shop-card-top"><span class="shop-lock">LOCKED</span></div>
+            <div class="shop-card-body">
+              <div class="shop-card-name">Pliers and Acrylic Markers</div>
+              <div class="shop-card-desc">Check the form to see the option to add this</div>
+              <div class="shop-card-meta">
+                <div class="shop-card-cta locked">REQUIRES 4 SHIPS</div>
+                <div class="shop-progress"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shop-card">
+            <div class="shop-card-top"><span class="shop-lock">LOCKED</span></div>
+            <div class="shop-card-body">
+              <div class="shop-card-name">Acrylic Markers</div>
+              <div class="shop-card-desc">Check the form to see the option to add this</div>
+              <div class="shop-card-meta">
+                <div class="shop-card-cta locked">REQUIRES 3 SHIPS</div>
+                <div class="shop-progress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq">
+      <div class="inner">
+        <h2 class="section-title">FAQ</h2>
+        <p class="section-sub">Frequently asked questions about CharmCraft.</p>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q">What do I need to participate?</div>
+            <div class="faq-a">Just a Hack Club account, access to the Hack Club Slack, and a design made in beginner-friendly design software. No prior experience needed.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is CharmCraft free?</div>
+            <div class="faq-a">Yes! If your design is approved, you get a free 3D-printed charm shipped to you, along with an earring kit.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What file type should I upload?</div>
+            <div class="faq-a">Upload your design as an STL file so it can be printed. Make sure it meets the submission requirements above.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Who can join?</div>
+            <div class="faq-a">Girls aged 13–18 from anywhere in the world are welcome. Identity must be verified using Hack Club Auth.</div>
+          </div>
+        </div>
+        <div class="faq-hint">Hover over a question to reveal the answer.</div>
+      </div>
+    </section>
+
+    <!-- Canva Guide -->
+    <section class="section guide">
+      <div class="inner">
+        <h2 class="section-title">Canva <span class="section-title-accent">Guide</span></h2>
+        <p class="section-sub">Here is the Canva guide to designing your charm. <a href="https://www.canva.com/design/DAFA-guide" target="_blank" rel="noopener" class="guide-link">Open the Canva guide →</a></p>
+        <div class="guide-embed">
+          <iframe src="https://www.canva.com/design/DAFA-guide" loading="lazy" title="Canva Guide"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
