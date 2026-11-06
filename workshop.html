@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CharmCraft — Workshops</title>
+  <title>CharmCraft — Club Submissions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -20,7 +18,7 @@
       <img class="site-nav-logo" src="flag-orpheus-top.png" alt="CharmCraft logo" />
       <nav class="site-nav-links">
         <a href="hero.html" class="site-nav-link">Home</a>
-        <a href="workshop.html" class="site-nav-link active">Workshops</a>
+        <a href="workshop.html" class="site-nav-link active">Club Submissions</a>
         <a href="form.html" class="site-nav-link">Form</a>
       </nav>
       <a href="form.html" class="site-nav-cta">
@@ -31,14 +29,13 @@
 
   <main class="ws-section">
     <div class="ws-inner">
-      <h1 class="ws-title">Hosting <span class="ws-title-accent">workshops</span></h1>
+      <h1 class="ws-title">Club <span class="ws-title-accent">Submissions</span></h1>
 
       <div class="ws-desc-row">
         <div class="ws-desc">
-          <p>CharmCraft is a Hack Club YSWS where you design a charm and get an earring kit so you can turn their creations into wearable jewelry. No prior design experience is needed — it works for complete beginners, and girls from anywhere in the world are welcome!</p>
-          <p>Host a CharmCraft workshop at your club meeting. Members will design their own charm using beginner-friendly design software (following our workshop guide), submit their design, and have it reviewed. Each approved submission earns them a free 3D-printed charm, shipped alongside an earring kit so they can assemble their own personalized earrings at home.</p>
-          <p>Our workshop guide walks you through the entire process, making it easy to run — even if no one has experience with 3D design.</p>
-          <p>This workshop is designed to introduce girls to 3D design, creativity, and digital fabrication in a fun, hands-on way while giving them something they can actually wear and keep.</p>
+          <p class="ws-lead">Bring CharmCraft to your club.</p>
+          <p>Members design a charm in CAD, submit it, and get a <strong>free 3D print + earring kit</strong>.</p>
+          <p><strong>No experience needed.</strong> Girls worldwide are welcome, and our workshop guide covers every step.</p>
         </div>
 
         <div class="ws-stats">
@@ -53,91 +50,29 @@
         </div>
       </div>
 
-      <div class="ws-layout">
-        <div class="ws-side">
-          <div class="ws-card">
-            <div class="ws-card-title">Host a Workshop</div>
-            <div class="ws-card-banner">Start a Hack Club sponsored club at your school</div>
-          </div>
-
-          <div class="ws-card ws-card-pins">
-            <div class="ws-card-title">Recent Pins</div>
-            <div class="ws-pin-list">
-              <div class="ws-pin">
-                <div class="ws-pin-city">Toronto, ON</div>
-                <div class="ws-pin-meta">by Alex R. • 30 girls</div>
-              </div>
-              <div class="ws-pin">
-                <div class="ws-pin-city">London, UK</div>
-                <div class="ws-pin-meta">by Emma W. • 15 girls</div>
-              </div>
-              <div class="ws-pin">
-                <div class="ws-pin-city">Los Angeles, CA</div>
-                <div class="ws-pin-meta">by Maya P. • 40 girls</div>
-              </div>
-            </div>
-          </div>
+      <div class="ws-links">
+        <div class="req-card">
+          <div class="req-card-title">Start a new club</div>
+          <p class="ws-link-desc">Don't have a Hack Club at your school yet? Start one and bring CharmCraft to your members.</p>
+          <a href="https://hackclub.com/" target="_blank" rel="noopener" class="req-btn">Start a new club</a>
         </div>
-
-        <div>
-          <div id="workshop-map" class="ws-map"></div>
-          <div class="ws-map-note">Click anywhere on the map to drop a new pin.</div>
+        <div class="req-card yellow">
+          <div class="req-card-title">Already have a club?</div>
+          <p class="ws-link-desc">Head to clubs.hackclub.com to start a CharmCraft workshop with your existing club.</p>
+          <a href="https://clubs.hackclub.com/" target="_blank" rel="noopener" class="req-btn dark">Go to clubs.hackclub.com</a>
         </div>
+      </div>
+
+      <div class="ws-rule">
+        <span class="shop-tag">// CLUB RULE</span>
+        <p class="ws-rule-text">At least 4 individuals from your club must submit a design. Once your club reaches 4 submissions, we will automatically send your club pliers and markers.</p>
       </div>
     </div>
   </main>
 
-  <section class="ws-gallery">
-    <div class="ws-gallery-inner">
-      <h2 class="ws-gallery-title">Workshop <span class="ws-gallery-title-accent">Photo Gallery</span></h2>
-      <div class="ws-gallery-grid">
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <div class="ws-gallery-box"></div>
-        <button type="button" class="ws-gallery-add">Add your own photos</button>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    var map = L.map('workshop-map', {
-      scrollWheelZoom: false,
-      center: [40, -40],
-      zoom: 3
-    });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    var existingPins = [
-      { label: 'Toronto, ON', lat: 43.6532, lng: -79.3832 },
-      { label: 'London, UK', lat: 51.5074, lng: -0.1278 },
-      { label: 'Los Angeles, CA', lat: 34.0522, lng: -118.2437 }
-    ];
-
-    existingPins.forEach(function (pin) {
-      L.marker([pin.lat, pin.lng])
-        .addTo(map)
-        .bindPopup('<b>' + pin.label + '</b>')
-        .openPopup();
-    });
-
-    map.on('click', function (e) {
-      L.marker(e.latlng)
-        .addTo(map)
-        .bindPopup(
-          '<b>New pin</b><br>Lat: ' +
-            e.latlng.lat.toFixed(4) +
-            '<br>Lng: ' +
-            e.latlng.lng.toFixed(4)
-        )
-        .openPopup();
-    });
-  </script>
+  <footer class="site-footer">
+    <p class="site-footer-tagline">We ship it, <span>you design</span></p>
+    <p class="site-footer-credit">Made by Isha Malla · Sponsored by Jared</p>
+  </footer>
 </body>
 </html>
